@@ -1,0 +1,710 @@
+---
+title: 'Polish palatalized retroflexes: GAMM analysis'
+author: "Márton Sóskuthy"
+date: "29/07/2020"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true  
+    toc_float: true 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Using this file
+
+This file presents example videos based on Generalised Additive Mixed Models fitted to electromagnetic articulography data representing palatalized retroflex sibilants in Polish. It accompanies our paper titled "Articulatory and acoustic variation in Polish palatalised retroflexes as compared to plain ones." The first two videos represent group patterns based on an omnibus model fitted to all the (i) affricates and (ii) fricatives. The videos at the end show model predictions for specific speakers representing convex, plain and concave tongue shapes (matching figures 15-20 in the paper).
+
+The R code used to run the analyses is hidden by default, but can be unfolded by clicking on the "Code" buttons on the right. The main text provides brief descriptions of each of these code chunks. If you're mainly interested in seeing the videos, you may want to skip to the following locations:
+
+- video for CZ(j) / DZ(j) for all speakers: [link](#videocz) 
+- video for SZ(j) / Z(j) for all speakers: [link](#videosz)
+- example videos showing individual speakers (figures 15-20 in the paper): [link](#examples) 
+
+## Data import and packages
+
+The foldable code chunk below loads the list of packages used in this analysis file as well as the main data file.
+
+```{r message = FALSE, warning= FALSE}
+library(tidyverse)
+library(readxl)
+library(mgcv)
+library(itsadug)
+library(gganimate)
+
+sibs <- read_csv("sibs_final.csv")
+```
+
+## Modelling: setting up predictors
+
+Various predictors need to be converted to factors / ordered factors for GAMMs to work. This is achieved by the foldable code chunk below.
+
+```{r}
+sibs$Palatalization <- factor(sibs$Palatalization, levels=c("plain", "palatalized"))
+sibs$Palatalization <- as.ordered(sibs$Palatalization)
+contrasts(sibs$Palatalization) <- "contr.treatment"
+
+sibs$Speaker <- factor(sibs$Speaker)
+sibs$Word <- factor(sibs$Word)
+
+sibs$Voicing <- as.ordered(factor(sibs$Voicing, levels=c("voiceless","voiced")))
+contrasts(sibs$Voicing) <- "contr.treatment"
+```
+
+In addition, the GAMM analysis requires a predictor that indicates the start of each trajectory. This is added in the coded chunk below.
+
+```{r}
+sibs <- sibs %>%
+  arrange(Speaker, file, axis, sensor, time)
+sibs$start <- sibs$time==0
+```
+
+## Modelling: full analysis
+
+We first fit a GAMM to all speakers in the corpus. Separate models are fit to CZ(i)/DZ(i) vs. SZ(i)/Z(i).
+
+We start with CZ(i)/DZ(i). Voicing did not play a key role in any of the previous analyses; we'll add a te() difference term for voiced vs. voiceless, but this term won't be allowed to interact with palatalisation (no meaningful interactions were seen elsewhere). This is equivalent to what was done for the acoustic analysis.
+
+The random effects structure is tricky. We need random smooth surfaces over time / sensor by speaker; and also a random difference smooth with the same specs. Ideally, we'd do the same by word, but that would make things computationally intractable. As the data do not indicate massive differences purely as a function of word (preliminary plots show a lot of consistency within speakers), we'll just add random intercepts by word.
+
+### Models for CZ(i)/DZ(i)
+
+Sensors z and x are modelled separately, and, therefore, separate data sets are created for them. This is shown below in the foldable code chunk.
+
+```{r}
+czdz_z <- filter(sibs, 
+                 Sound %in% c("CZ", "CZI", "DZ", "DZI"), 
+                 axis=="z")
+czdz_x <- filter(sibs, 
+                 Sound %in% c("CZ", "CZI", "DZ", "DZI"), 
+                 axis=="x")
+```
+
+We now fit a model without an AR1 error component to the Z axis (vertical sensor movement) and the X axis to establish the degree of autocorrelation within contours. The models are shown below, but this code chunk need not be run, as the pre-fitted models are loaded in the next chunk.
+
+```{r eval=F}
+# Vertical sensor movement
+czdz_gam_ver_noAR <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data =  czdz_z,
+               discrete=T, nthreads=2)
+saveRDS(czdz_gam_ver_noAR, "models/czdz_gam_ver_noAR.rds")
+
+# Horizontal sensor movement
+czdz_gam_hor_noAR <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data =  czdz_x,
+               discrete=T, nthreads=2)
+saveRDS(czdz_gam_hor_noAR, "models/czdz_gam_hor_noAR.rds")
+```
+
+We now load the fitted models and extract the autocorrelation values. This is shown in the foldable chunk below.
+
+```{r fig.show='hide'}
+czdz_gam_ver_noAR <- readRDS("models/czdz_gam_ver_noAR.rds")
+czdz_gam_hor_noAR <- readRDS("models/czdz_gam_hor_noAR.rds")
+czdz_ver_rho = acf(resid_gam(czdz_gam_ver_noAR))[2][[1]][[1]]
+czdz_hor_rho = acf(resid_gam(czdz_gam_hor_noAR))[2][[1]][[1]]
+```
+
+Now fitting the actual models (in the foldable chunk below). Again, the models need not be run, as they will be loaded in the chunk below.
+
+```{r eval=F}
+# Vertical sensor movement
+czdz_gam_ver <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data = czdz_z,
+               discrete=T, nthreads=2,
+               AR.start=czdz_z$start, rho=czdz_ver_rho)
+saveRDS(czdz_gam_ver, "models/czdz_gam_ver.rds")
+
+# Horizontal sensor movement
+czdz_gam_hor <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data = czdz_x,
+               discrete=T, nthreads=2,
+               AR.start=czdz_x$start, rho=czdz_hor_rho)
+saveRDS(czdz_gam_hor, "models/czdz_gam_hor.rds")
+```
+
+### Video for CZ(i)/DZ(i) {#videocz}
+
+The code below generates a video summary of these two models. We first start by extracting predictions from the model. These predictions are used to create the video below.
+
+```{r}
+# loading models
+czdz_gam_ver <- readRDS("models/czdz_gam_ver.rds")
+czdz_gam_hor <- readRDS("models/czdz_gam_hor.rds")
+
+# extracting predictions
+preds <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless","voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=czdz_x$Speaker[1],
+                     Word=czdz_x$Word[1])
+
+preds$xfit <- predict(czdz_gam_hor, newdata=preds, se=T, 
+                   exclude=c("te(sensor,time,Speaker)",
+                             "te(sensor,time,Speaker):Palatalizationpalatalized",
+                             "s(Word)"))$fit
+preds$yfit <- predict(czdz_gam_ver, newdata=preds, se=T, 
+                   exclude=c("te(sensor,time,Speaker)",
+                             "te(sensor,time,Speaker):Palatalizationpalatalized",
+                             "s(Word)"))$fit
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+# generating the video
+ipa_text <- data.frame(
+  Voicing=c("voiceless","voiceless","voiced","voiced"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(18,18,18,18),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c("ʈʂ","ʈʂʲ","ɖʐ","ɖʐʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'All speakers: affricates; Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+animate(p, nframes=101, fps=24)
+```
+
+### Models for SZ(i)/Z(i)
+
+We follow the exact same logic as above, starting by creating subsets of the original data for the two fricatives.
+
+```{r}
+szz_z <- filter(sibs, 
+                Sound %in% c("Z", "ZI", "SZ", "SZI"), 
+                axis=="z")
+szz_x <- filter(sibs, 
+                Sound %in% c("Z", "ZI", "SZ", "SZI"), 
+                axis=="x")
+```
+
+We then fit vanilla (i.e. no AR) models to the data to establish the degree of autocorrelation.
+
+```{r eval=F}
+# Vertical sensor movement
+szz_gam_ver_noAR <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data =  szz_z,
+               discrete=T, nthreads=2)
+saveRDS(szz_gam_ver_noAR, "models/szz_gam_ver_noAR.rds")
+
+# Horizontal sensor movement
+szz_gam_hor_noAR <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data =  szz_x,
+               discrete=T, nthreads=2)
+saveRDS(szz_gam_hor_noAR, "models/szz_gam_hor_noAR.rds")
+```
+
+We load these models from prefitted RDS files and extract rho for our full models with autocorrelation.
+
+```{r fig.show='hide'}
+szz_gam_ver_noAR <- readRDS("models/szz_gam_ver_noAR.rds")
+szz_gam_hor_noAR <- readRDS("models/szz_gam_hor_noAR.rds")
+szz_ver_rho = acf(resid_gam(szz_gam_ver_noAR))[2][[1]][[1]]
+szz_hor_rho = acf(resid_gam(szz_gam_hor_noAR))[2][[1]][[1]]
+```
+
+Now fitting the actual models. Again, the models need not be run, as they will be loaded in the chunk below.
+
+```{r eval=F}
+# Vertical sensor movement
+szz_gam_ver <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data = szz_z,
+               discrete=T, nthreads=2,
+               AR.start=szz_z$start, rho=szz_ver_rho)
+saveRDS(szz_gam_ver, "models/szz_gam_ver.rds")
+
+# Horizontal sensor movement
+szz_gam_hor <- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c("tp","tp","re"), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs="re"),
+               data = szz_x,
+               discrete=T, nthreads=2,
+               AR.start=szz_x$start, rho=szz_hor_rho)
+saveRDS(szz_gam_hor, "models/szz_gam_hor.rds")
+```
+
+### Video for SZ(i)/Z(i) {#videosz}
+
+The code below generates a video summary of these two models. We first start by extracting predictions from the model.
+
+```{r}
+# loading model
+szz_gam_ver <- readRDS("models/szz_gam_ver.rds")
+szz_gam_hor <- readRDS("models/szz_gam_hor.rds")
+
+# extracting predictions
+preds <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless","voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=szz_x$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds$xfit <- predict(szz_gam_hor, newdata=preds, se=T, 
+                   exclude=c("te(sensor,time,Speaker)",
+                             "te(sensor,time,Speaker):Palatalizationpalatalized",
+                             "s(Word)"))$fit
+preds$yfit <- predict(szz_gam_ver, newdata=preds, se=T, 
+                   exclude=c("te(sensor,time,Speaker)",
+                             "te(sensor,time,Speaker):Palatalizationpalatalized",
+                             "s(Word)"))$fit
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+# now generating the video
+ipa_text <- data.frame(
+  Voicing=c("voiceless","voiceless","voiced","voiced"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(18,18,18,18),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c("ʂ","ʂʲ","ʐ","ʐʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'All speakers: fricatives; Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+## Example videos for individual speakers / segments {.tabset} {#examples}
+
+We show separate videos for each of the speakers exemplified in the figures in section 4.2.1.2. These videos and the accompanying code can be accessed by clicking on the tabs below.
+
+Each video is created the same way. First, we generate predictions based on the omnibus models above, but with the value of the by-speaker random effects set to the relevant speaker. In effect, this is very similar to fitting a model to a single speaker and showing the results from that model. We then create a video for that specific speaker. The code chunks can be expanded to access the full details of this process.
+
+### Fig 15, convex: Speaker F7
+
+```{r}
+preds <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless","voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker=="F7")$Speaker[1],
+                     Word=czdz_x$Word[1])
+
+pred_xs <- predict(czdz_gam_hor, newdata=preds, se=T, 
+                   exclude=c("s(Word)"))
+pred_ys <- predict(czdz_gam_ver, newdata=preds, se=T, 
+                   exclude=c("s(Word)"))
+
+preds$xfit <- pred_xs$fit
+preds$yfit <- pred_ys$fit
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+ipa_text <- data.frame(
+  Voicing=c("voiceless","voiceless","voiced","voiced"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(18,18,18,18),
+  yfit=c(3,3,3,3),
+  ipa=c("tʂ","tʂʲ","dʐ","dʐʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker F7 (Fig. 15); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(20,-25)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+### Fig 16, convex: Speaker M7
+
+```{r}
+preds_czdz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker=="M7")$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker=="M7")$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit <- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$yfit <- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$xfit <- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$yfit <- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+
+preds <- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+preds$Voicing <- recode(preds$Voicing,
+                        voiceless="vl fricative",
+                        voiced="vd affricate")
+
+ipa_text <- data.frame(
+  Voicing=c("vl fricative","vl fricative","vd affricate","vd affricate"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(20,20,20,20),
+  yfit=c(-12,-12,-12,-12),
+  ipa=c("ʂ","ʂʲ","dʐ","dʐʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker M7 (Fig. 16); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(22,-25)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+### Fig 17, plain: Speaker F1
+
+```{r}
+preds_czdz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker=="F1")$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker=="F1")$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit <- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$yfit <- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$Voicing <- recode(preds_czdz$Voicing, voiceless="vl affricate")
+preds_szz$xfit <- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$yfit <- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$Voicing <- recode(preds_szz$Voicing, voiceless="vl fricative")
+
+preds <- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+ipa_text <- data.frame(
+  Voicing=c("vl fricative","vl fricative","vl affricate","vl affricate"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(19,19,19,19),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c("ʂ","ʂʲ","tʂ","tʂʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker F1 (Fig. 17); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+
+### Fig 18, plain: Speaker M8
+
+```{r}
+preds_czdz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker=="M8")$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker=="M8")$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit <- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$yfit <- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$Voicing <- recode(preds_czdz$Voicing, voiceless="vl affricate")
+preds_szz$xfit <- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$yfit <- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$Voicing <- recode(preds_szz$Voicing, voiceless="vl fricative")
+
+preds <- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+ipa_text <- data.frame(
+  Voicing=c("vl fricative","vl fricative","vl affricate","vl affricate"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(-11,-11,-11,-11),
+  yfit=c(-1,-1,-1,-1),
+  ipa=c("ʂ","ʂʲ","tʂ","tʂʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker M8 (Fig. 18); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(-9,-55)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+### Fig 19, concave: Speaker F9
+
+```{r}
+preds_czdz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker=="F9")$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker=="F9")$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit <- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_czdz$yfit <- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$xfit <- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+preds_szz$yfit <- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c("s(Word)"))$fit
+
+preds <- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+preds$Voicing <- recode(preds$Voicing,
+                        voiceless="vl affricate",
+                        voiced="vd fricative")
+
+ipa_text <- data.frame(
+  Voicing=c("vd fricative","vd fricative","vl affricate","vl affricate"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(60,60,60,60),
+  yfit=c(-17,-17,-17,-17),
+  ipa=c("ʐ","ʐʲ","tʂ","tʂʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker F9 (Fig. 19); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(62,23)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
+
+### Fig 20, concave: Speaker M4
+
+```{r}
+preds <- expand.grid(Palatalization=as.ordered(factor(c("plain","palatalized"), levels=c("plain","palatalized"))),
+                     Voicing=as.ordered(factor(c("voiceless","voiced"), levels=c("voiceless","voiced"))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker=="M4")$Speaker[1],
+                     Word=szz_x$Word[1])
+
+pred_xs <- predict(szz_gam_hor, newdata=preds, se=T, 
+                   exclude=c("s(Word)"))
+pred_ys <- predict(szz_gam_ver, newdata=preds, se=T, 
+                   exclude=c("s(Word)"))
+
+preds$xfit <- pred_xs$fit
+preds$yfit <- pred_ys$fit
+
+preds$sensor_text <- c("TT","TF","TD","TB")[preds$sensor]
+
+ipa_text <- data.frame(
+  Voicing=c("voiceless","voiceless","voiced","voiced"),
+  Palatalization=c("plain","palatalized","plain","palatalized"),
+  xfit=c(55,55,55,55),
+  yfit=c(-10,-10,-10,-10),
+  ipa=c("ʂ","ʂʲ","ʐ","ʐʲ")
+)
+
+p <- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes('linear') +
+  labs(title = 'Speaker M4 (Fig. 20); Relative time: {frame_time}') +
+  scale_x_reverse(limits=c(56,20)) +
+  xlab("horizontal sensor position (mm)") +
+  ylab("vertical sensor position (mm)") +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face="bold"),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)
+```
