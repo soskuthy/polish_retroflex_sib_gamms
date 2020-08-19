@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Márton Sóskuthy" />
+
+
+<title>Polish palatalized retroflexes: GAMM analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Polish palatalized retroflexes: GAMM analysis</h1>
+<h4 class="author"><em>Márton Sóskuthy</em></h4>
+<h4 class="date"><em>29/07/2020</em></h4>
+
+</div>
+
+
+<div id="using-this-file" class="section level2">
+<h2>Using this file</h2>
+<p>This file presents example videos based on Generalised Additive Mixed Models fitted to electromagnetic articulography data representing palatalized retroflex sibilants in Polish. It accompanies our paper titled “Articulatory and acoustic variation in Polish palatalised retroflexes as compared to plain ones.” The first two videos represent group patterns based on an omnibus model fitted to all the (i) affricates and (ii) fricatives. The videos at the end show model predictions for specific speakers representing convex, plain and concave tongue shapes (matching figures 15-20 in the paper).</p>
+<p>The R code used to run the analyses is hidden by default, but can be unfolded by clicking on the “Code” buttons on the right. The main text provides brief descriptions of each of these code chunks. If you’re mainly interested in seeing the videos, you may want to skip to the following locations:</p>
+<ul>
+<li>video for CZ(j) / DZ(j) for all speakers: <a href="#videocz">link</a></li>
+<li>video for SZ(j) / Z(j) for all speakers: <a href="#videosz">link</a></li>
+<li>example videos showing individual speakers (figures 15-20 in the paper): <a href="#examples">link</a></li>
+</ul>
+</div>
+<div id="data-import-and-packages" class="section level2">
+<h2>Data import and packages</h2>
+<p>The foldable code chunk below loads the list of packages used in this analysis file as well as the main data file.</p>
+<pre class="r"><code>library(tidyverse)
+library(readxl)
+library(mgcv)
+library(itsadug)
+library(gganimate)
+
+sibs &lt;- read_csv(&quot;sibs_final.csv&quot;)</code></pre>
+</div>
+<div id="modelling-setting-up-predictors" class="section level2">
+<h2>Modelling: setting up predictors</h2>
+<p>Various predictors need to be converted to factors / ordered factors for GAMMs to work. This is achieved by the foldable code chunk below.</p>
+<pre class="r"><code>sibs$Palatalization &lt;- factor(sibs$Palatalization, levels=c(&quot;plain&quot;, &quot;palatalized&quot;))
+sibs$Palatalization &lt;- as.ordered(sibs$Palatalization)
+contrasts(sibs$Palatalization) &lt;- &quot;contr.treatment&quot;
+
+sibs$Speaker &lt;- factor(sibs$Speaker)
+sibs$Word &lt;- factor(sibs$Word)
+
+sibs$Voicing &lt;- as.ordered(factor(sibs$Voicing, levels=c(&quot;voiceless&quot;,&quot;voiced&quot;)))
+contrasts(sibs$Voicing) &lt;- &quot;contr.treatment&quot;</code></pre>
+<p>In addition, the GAMM analysis requires a predictor that indicates the start of each trajectory. This is added in the coded chunk below.</p>
+<pre class="r"><code>sibs &lt;- sibs %&gt;%
+  arrange(Speaker, file, axis, sensor, time)
+sibs$start &lt;- sibs$time==0</code></pre>
+</div>
+<div id="modelling-full-analysis" class="section level2">
+<h2>Modelling: full analysis</h2>
+<p>We first fit a GAMM to all speakers in the corpus. Separate models are fit to CZ(i)/DZ(i) vs. SZ(i)/Z(i).</p>
+<p>We start with CZ(i)/DZ(i). Voicing did not play a key role in any of the previous analyses; we’ll add a te() difference term for voiced vs. voiceless, but this term won’t be allowed to interact with palatalisation (no meaningful interactions were seen elsewhere). This is equivalent to what was done for the acoustic analysis.</p>
+<p>The random effects structure is tricky. We need random smooth surfaces over time / sensor by speaker; and also a random difference smooth with the same specs. Ideally, we’d do the same by word, but that would make things computationally intractable. As the data do not indicate massive differences purely as a function of word (preliminary plots show a lot of consistency within speakers), we’ll just add random intercepts by word.</p>
+<div id="models-for-czidzi" class="section level3">
+<h3>Models for CZ(i)/DZ(i)</h3>
+<p>Sensors z and x are modelled separately, and, therefore, separate data sets are created for them. This is shown below in the foldable code chunk.</p>
+<pre class="r"><code>czdz_z &lt;- filter(sibs, 
+                 Sound %in% c(&quot;CZ&quot;, &quot;CZI&quot;, &quot;DZ&quot;, &quot;DZI&quot;), 
+                 axis==&quot;z&quot;)
+czdz_x &lt;- filter(sibs, 
+                 Sound %in% c(&quot;CZ&quot;, &quot;CZI&quot;, &quot;DZ&quot;, &quot;DZI&quot;), 
+                 axis==&quot;x&quot;)</code></pre>
+<p>We now fit a model without an AR1 error component to the Z axis (vertical sensor movement) and the X axis to establish the degree of autocorrelation within contours. The models are shown below, but this code chunk need not be run, as the pre-fitted models are loaded in the next chunk.</p>
+<pre class="r"><code># Vertical sensor movement
+czdz_gam_ver_noAR &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data =  czdz_z,
+               discrete=T, nthreads=2)
+saveRDS(czdz_gam_ver_noAR, &quot;models/czdz_gam_ver_noAR.rds&quot;)
+
+# Horizontal sensor movement
+czdz_gam_hor_noAR &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data =  czdz_x,
+               discrete=T, nthreads=2)
+saveRDS(czdz_gam_hor_noAR, &quot;models/czdz_gam_hor_noAR.rds&quot;)</code></pre>
+<p>We now load the fitted models and extract the autocorrelation values. This is shown in the foldable chunk below.</p>
+<pre class="r"><code>czdz_gam_ver_noAR &lt;- readRDS(&quot;models/czdz_gam_ver_noAR.rds&quot;)
+czdz_gam_hor_noAR &lt;- readRDS(&quot;models/czdz_gam_hor_noAR.rds&quot;)
+czdz_ver_rho = acf(resid_gam(czdz_gam_ver_noAR))[2][[1]][[1]]</code></pre>
+<pre class="r"><code>czdz_hor_rho = acf(resid_gam(czdz_gam_hor_noAR))[2][[1]][[1]]</code></pre>
+<p>Now fitting the actual models (in the foldable chunk below). Again, the models need not be run, as they will be loaded in the chunk below.</p>
+<pre class="r"><code># Vertical sensor movement
+czdz_gam_ver &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data = czdz_z,
+               discrete=T, nthreads=2,
+               AR.start=czdz_z$start, rho=czdz_ver_rho)
+saveRDS(czdz_gam_ver, &quot;models/czdz_gam_ver.rds&quot;)
+
+# Horizontal sensor movement
+czdz_gam_hor &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data = czdz_x,
+               discrete=T, nthreads=2,
+               AR.start=czdz_x$start, rho=czdz_hor_rho)
+saveRDS(czdz_gam_hor, &quot;models/czdz_gam_hor.rds&quot;)</code></pre>
+</div>
+<div id="videocz" class="section level3">
+<h3>Video for CZ(i)/DZ(i)</h3>
+<p>The code below generates a video summary of these two models. We first start by extracting predictions from the model. These predictions are used to create the video below.</p>
+<pre class="r"><code># loading models
+czdz_gam_ver &lt;- readRDS(&quot;models/czdz_gam_ver.rds&quot;)
+czdz_gam_hor &lt;- readRDS(&quot;models/czdz_gam_hor.rds&quot;)
+
+# extracting predictions
+preds &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;,&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=czdz_x$Speaker[1],
+                     Word=czdz_x$Word[1])
+
+preds$xfit &lt;- predict(czdz_gam_hor, newdata=preds, se=T, 
+                   exclude=c(&quot;te(sensor,time,Speaker)&quot;,
+                             &quot;te(sensor,time,Speaker):Palatalizationpalatalized&quot;,
+                             &quot;s(Word)&quot;))$fit
+preds$yfit &lt;- predict(czdz_gam_ver, newdata=preds, se=T, 
+                   exclude=c(&quot;te(sensor,time,Speaker)&quot;,
+                             &quot;te(sensor,time,Speaker):Palatalizationpalatalized&quot;,
+                             &quot;s(Word)&quot;))$fit
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+# generating the video
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;voiceless&quot;,&quot;voiceless&quot;,&quot;voiced&quot;,&quot;voiced&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(18,18,18,18),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c(&quot;ʈʂ&quot;,&quot;ʈʂʲ&quot;,&quot;ɖʐ&quot;,&quot;ɖʐʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;All speakers: affricates; Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 1.9 fps ~ eta:  1m
+Rendering [&gt;--------------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta:  1m
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta: 48s
+Rendering [===&gt;-------------------------------------] at 2 fps ~ eta: 46s
+Rendering [===&gt;-------------------------------------] at 2 fps ~ eta: 44s
+Rendering [===&gt;-----------------------------------] at 2.1 fps ~ eta: 44s
+Rendering [====&gt;----------------------------------] at 2.1 fps ~ eta: 42s
+Rendering [====&gt;----------------------------------] at 2.2 fps ~ eta: 41s
+Rendering [====&gt;----------------------------------] at 2.2 fps ~ eta: 40s
+Rendering [=====&gt;---------------------------------] at 2.2 fps ~ eta: 39s
+Rendering [=====&gt;---------------------------------] at 2.2 fps ~ eta: 38s
+Rendering [======&gt;--------------------------------] at 2.3 fps ~ eta: 37s
+Rendering [======&gt;--------------------------------] at 2.3 fps ~ eta: 36s
+Rendering [=======&gt;-------------------------------] at 2.3 fps ~ eta: 35s
+Rendering [=======&gt;-------------------------------] at 2.3 fps ~ eta: 34s
+Rendering [=======&gt;-------------------------------] at 2.4 fps ~ eta: 34s
+Rendering [========&gt;------------------------------] at 2.4 fps ~ eta: 33s
+Rendering [========&gt;------------------------------] at 2.4 fps ~ eta: 32s
+Rendering [=========&gt;-----------------------------] at 2.4 fps ~ eta: 32s
+Rendering [=========&gt;-----------------------------] at 2.4 fps ~ eta: 31s
+Rendering [=========&gt;-----------------------------] at 2.4 fps ~ eta: 30s
+Rendering [==========&gt;----------------------------] at 2.4 fps ~ eta: 30s
+Rendering [==========&gt;----------------------------] at 2.5 fps ~ eta: 29s
+Rendering [===========&gt;---------------------------] at 2.5 fps ~ eta: 29s
+Rendering [===========&gt;---------------------------] at 2.5 fps ~ eta: 28s
+Rendering [============&gt;--------------------------] at 2.5 fps ~ eta: 27s
+Rendering [=============&gt;-------------------------] at 2.5 fps ~ eta: 26s
+Rendering [==============&gt;------------------------] at 2.5 fps ~ eta: 25s
+Rendering [==============&gt;------------------------] at 2.5 fps ~ eta: 24s
+Rendering [===============&gt;-----------------------] at 2.5 fps ~ eta: 24s
+Rendering [===============&gt;-----------------------] at 2.5 fps ~ eta: 23s
+Rendering [================&gt;----------------------] at 2.5 fps ~ eta: 23s
+Rendering [================&gt;----------------------] at 2.5 fps ~ eta: 22s
+Rendering [=================&gt;---------------------] at 2.5 fps ~ eta: 22s
+Rendering [=================&gt;---------------------] at 2.5 fps ~ eta: 21s
+Rendering [==================&gt;--------------------] at 2.5 fps ~ eta: 21s
+Rendering [==================&gt;--------------------] at 2.5 fps ~ eta: 20s
+Rendering [===================&gt;-------------------] at 2.6 fps ~ eta: 20s
+Rendering [===================&gt;-------------------] at 2.6 fps ~ eta: 19s
+Rendering [===================&gt;-------------------] at 2.5 fps ~ eta: 19s
+Rendering [====================&gt;------------------] at 2.5 fps ~ eta: 19s
+Rendering [====================&gt;------------------] at 2.5 fps ~ eta: 18s
+Rendering [=====================&gt;-----------------] at 2.5 fps ~ eta: 18s
+Rendering [=====================&gt;-----------------] at 2.5 fps ~ eta: 17s
+Rendering [======================&gt;----------------] at 2.5 fps ~ eta: 17s
+Rendering [======================&gt;----------------] at 2.4 fps ~ eta: 17s
+Rendering [=======================&gt;---------------] at 2.4 fps ~ eta: 16s
+Rendering [========================&gt;--------------] at 2.4 fps ~ eta: 15s
+Rendering [=========================&gt;-------------] at 2.4 fps ~ eta: 14s
+Rendering [==========================&gt;------------] at 2.4 fps ~ eta: 13s
+Rendering [===========================&gt;-----------] at 2.3 fps ~ eta: 12s
+Rendering [============================&gt;----------] at 2.3 fps ~ eta: 12s
+Rendering [============================&gt;----------] at 2.3 fps ~ eta: 11s
+Rendering [=============================&gt;---------] at 2.3 fps ~ eta: 10s
+Rendering [==============================&gt;--------] at 2.3 fps ~ eta: 10s
+Rendering [==============================&gt;--------] at 2.2 fps ~ eta:  9s
+Rendering [===============================&gt;-------] at 2.2 fps ~ eta:  9s
+Rendering [===============================&gt;-------] at 2.2 fps ~ eta:  8s
+Rendering [================================&gt;------] at 2.2 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 2.2 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 2.2 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 2.2 fps ~ eta:  4s
+Rendering [===================================&gt;---] at 2.2 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 2.1 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 2.1 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 2.1 fps ~ eta:  1s
+Rendering [======================================&gt;] at 2.1 fps ~ eta:  0s
+Rendering [=======================================] at 2.1 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-66-1.gif" /><!-- --></p>
+</div>
+<div id="models-for-szizi" class="section level3">
+<h3>Models for SZ(i)/Z(i)</h3>
+<p>We follow the exact same logic as above, starting by creating subsets of the original data for the two fricatives.</p>
+<pre class="r"><code>szz_z &lt;- filter(sibs, 
+                Sound %in% c(&quot;Z&quot;, &quot;ZI&quot;, &quot;SZ&quot;, &quot;SZI&quot;), 
+                axis==&quot;z&quot;)
+szz_x &lt;- filter(sibs, 
+                Sound %in% c(&quot;Z&quot;, &quot;ZI&quot;, &quot;SZ&quot;, &quot;SZI&quot;), 
+                axis==&quot;x&quot;)</code></pre>
+<p>We then fit vanilla (i.e. no AR) models to the data to establish the degree of autocorrelation.</p>
+<pre class="r"><code># Vertical sensor movement
+szz_gam_ver_noAR &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data =  szz_z,
+               discrete=T, nthreads=2)
+saveRDS(szz_gam_ver_noAR, &quot;models/szz_gam_ver_noAR.rds&quot;)
+
+# Horizontal sensor movement
+szz_gam_hor_noAR &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data =  szz_x,
+               discrete=T, nthreads=2)
+saveRDS(szz_gam_hor_noAR, &quot;models/szz_gam_hor_noAR.rds&quot;)</code></pre>
+<p>We load these models from prefitted RDS files and extract rho for our full models with autocorrelation.</p>
+<pre class="r"><code>szz_gam_ver_noAR &lt;- readRDS(&quot;models/szz_gam_ver_noAR.rds&quot;)
+szz_gam_hor_noAR &lt;- readRDS(&quot;models/szz_gam_hor_noAR.rds&quot;)
+szz_ver_rho = acf(resid_gam(szz_gam_ver_noAR))[2][[1]][[1]]</code></pre>
+<pre class="r"><code>szz_hor_rho = acf(resid_gam(szz_gam_hor_noAR))[2][[1]][[1]]</code></pre>
+<p>Now fitting the actual models. Again, the models need not be run, as they will be loaded in the chunk below.</p>
+<pre class="r"><code># Vertical sensor movement
+szz_gam_ver &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data = szz_z,
+               discrete=T, nthreads=2,
+               AR.start=szz_z$start, rho=szz_ver_rho)
+saveRDS(szz_gam_ver, &quot;models/szz_gam_ver.rds&quot;)
+
+# Horizontal sensor movement
+szz_gam_hor &lt;- bam(location ~ 
+                 Palatalization + Voicing +
+                 te(sensor, time, k=c(4,10)) +
+                 te(sensor, time, k=c(4,10), by=Palatalization) +
+                 te(sensor, time, k=c(4,10), by=Voicing) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1) +
+                 te(sensor, time, Speaker, bs=c(&quot;tp&quot;,&quot;tp&quot;,&quot;re&quot;), k=c(4,10,20), m=1, by=Palatalization) +
+                 s(Word, bs=&quot;re&quot;),
+               data = szz_x,
+               discrete=T, nthreads=2,
+               AR.start=szz_x$start, rho=szz_hor_rho)
+saveRDS(szz_gam_hor, &quot;models/szz_gam_hor.rds&quot;)</code></pre>
+</div>
+<div id="videosz" class="section level3">
+<h3>Video for SZ(i)/Z(i)</h3>
+<p>The code below generates a video summary of these two models. We first start by extracting predictions from the model.</p>
+<pre class="r"><code># loading model
+szz_gam_ver &lt;- readRDS(&quot;models/szz_gam_ver.rds&quot;)
+szz_gam_hor &lt;- readRDS(&quot;models/szz_gam_hor.rds&quot;)
+
+# extracting predictions
+preds &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;,&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=szz_x$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds$xfit &lt;- predict(szz_gam_hor, newdata=preds, se=T, 
+                   exclude=c(&quot;te(sensor,time,Speaker)&quot;,
+                             &quot;te(sensor,time,Speaker):Palatalizationpalatalized&quot;,
+                             &quot;s(Word)&quot;))$fit
+preds$yfit &lt;- predict(szz_gam_ver, newdata=preds, se=T, 
+                   exclude=c(&quot;te(sensor,time,Speaker)&quot;,
+                             &quot;te(sensor,time,Speaker):Palatalizationpalatalized&quot;,
+                             &quot;s(Word)&quot;))$fit
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+# now generating the video
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;voiceless&quot;,&quot;voiceless&quot;,&quot;voiced&quot;,&quot;voiced&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(18,18,18,18),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c(&quot;ʂ&quot;,&quot;ʂʲ&quot;,&quot;ʐ&quot;,&quot;ʐʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;All speakers: fricatives; Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 2.7 fps ~ eta: 37s
+Rendering [&gt;--------------------------------------] at 2.7 fps ~ eta: 37s
+Rendering [&gt;--------------------------------------] at 2.5 fps ~ eta: 39s
+Rendering [=&gt;-------------------------------------] at 2.4 fps ~ eta: 41s
+Rendering [=&gt;-------------------------------------] at 2.3 fps ~ eta: 42s
+Rendering [=&gt;-------------------------------------] at 2.2 fps ~ eta: 42s
+Rendering [==&gt;------------------------------------] at 2.2 fps ~ eta: 43s
+Rendering [==&gt;------------------------------------] at 2.1 fps ~ eta: 43s
+Rendering [==&gt;------------------------------------] at 2.1 fps ~ eta: 45s
+Rendering [===&gt;-------------------------------------] at 2 fps ~ eta: 45s
+Rendering [===&gt;-----------------------------------] at 1.9 fps ~ eta: 46s
+Rendering [====&gt;------------------------------------] at 2 fps ~ eta: 45s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 44s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 43s
+Rendering [======&gt;----------------------------------] at 2 fps ~ eta: 42s
+Rendering [=======&gt;---------------------------------] at 2 fps ~ eta: 41s
+Rendering [=======&gt;---------------------------------] at 2 fps ~ eta: 40s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 40s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 39s
+Rendering [=========&gt;-------------------------------] at 2 fps ~ eta: 38s
+Rendering [==========&gt;------------------------------] at 2 fps ~ eta: 37s
+Rendering [==========&gt;------------------------------] at 2 fps ~ eta: 36s
+Rendering [===========&gt;-----------------------------] at 2 fps ~ eta: 35s
+Rendering [============&gt;----------------------------] at 2 fps ~ eta: 34s
+Rendering [=============&gt;---------------------------] at 2 fps ~ eta: 33s
+Rendering [==============&gt;--------------------------] at 2 fps ~ eta: 33s
+Rendering [==============&gt;--------------------------] at 2 fps ~ eta: 32s
+Rendering [===============&gt;-------------------------] at 2 fps ~ eta: 32s
+Rendering [===============&gt;-------------------------] at 2 fps ~ eta: 31s
+Rendering [================&gt;------------------------] at 2 fps ~ eta: 31s
+Rendering [================&gt;------------------------] at 2 fps ~ eta: 30s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 30s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 29s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 29s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.8 fps ~ eta: 27s
+Rendering [====================&gt;------------------] at 1.8 fps ~ eta: 26s
+Rendering [=====================&gt;-----------------] at 1.8 fps ~ eta: 25s
+Rendering [=====================&gt;-----------------] at 1.8 fps ~ eta: 24s
+Rendering [======================&gt;----------------] at 1.8 fps ~ eta: 23s
+Rendering [=======================&gt;---------------] at 1.8 fps ~ eta: 22s
+Rendering [=======================&gt;---------------] at 1.8 fps ~ eta: 21s
+Rendering [========================&gt;--------------] at 1.8 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.8 fps ~ eta: 19s
+Rendering [=========================&gt;-------------] at 1.8 fps ~ eta: 19s
+Rendering [=========================&gt;-------------] at 1.8 fps ~ eta: 18s
+Rendering [==========================&gt;------------] at 1.8 fps ~ eta: 18s
+Rendering [==========================&gt;------------] at 1.8 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.8 fps ~ eta: 16s
+Rendering [===========================&gt;-----------] at 1.8 fps ~ eta: 16s
+Rendering [===========================&gt;-----------] at 1.8 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.8 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.8 fps ~ eta: 14s
+Rendering [=============================&gt;---------] at 1.8 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta: 10s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.9 fps ~ eta:  1s
+Rendering [=======================================] at 1.9 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-71-1.gif" /><!-- --></p>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2>Example videos for individual speakers / segments {.tabset}</h2>
+<p>We show separate videos for each of the speakers exemplified in the figures in section 4.2.1.2. These videos and the accompanying code can be accessed by clicking on the tabs below.</p>
+<p>Each video is created the same way. First, we generate predictions based on the omnibus models above, but with the value of the by-speaker random effects set to the relevant speaker. In effect, this is very similar to fitting a model to a single speaker and showing the results from that model. We then create a video for that specific speaker. The code chunks can be expanded to access the full details of this process.</p>
+<div id="fig-15-convex-speaker-f7" class="section level3">
+<h3>Fig 15, convex: Speaker F7</h3>
+<pre class="r"><code>preds &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;,&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker==&quot;F7&quot;)$Speaker[1],
+                     Word=czdz_x$Word[1])
+
+pred_xs &lt;- predict(czdz_gam_hor, newdata=preds, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))
+pred_ys &lt;- predict(czdz_gam_ver, newdata=preds, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))
+
+preds$xfit &lt;- pred_xs$fit
+preds$yfit &lt;- pred_ys$fit
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;voiceless&quot;,&quot;voiceless&quot;,&quot;voiced&quot;,&quot;voiced&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(18,18,18,18),
+  yfit=c(3,3,3,3),
+  ipa=c(&quot;tʂ&quot;,&quot;tʂʲ&quot;,&quot;dʐ&quot;,&quot;dʐʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker F7 (Fig. 15); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(20,-25)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 2.2 fps ~ eta: 46s
+Rendering [&gt;--------------------------------------] at 2.1 fps ~ eta: 47s
+Rendering [=&gt;-------------------------------------] at 2.1 fps ~ eta: 46s
+Rendering [=&gt;-------------------------------------] at 2.1 fps ~ eta: 45s
+Rendering [==&gt;------------------------------------] at 2.1 fps ~ eta: 45s
+Rendering [==&gt;------------------------------------] at 2.1 fps ~ eta: 44s
+Rendering [===&gt;-----------------------------------] at 2.1 fps ~ eta: 44s
+Rendering [===&gt;-----------------------------------] at 2.1 fps ~ eta: 43s
+Rendering [====&gt;----------------------------------] at 2.1 fps ~ eta: 43s
+Rendering [====&gt;----------------------------------] at 2.1 fps ~ eta: 42s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 44s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 43s
+Rendering [======&gt;----------------------------------] at 2 fps ~ eta: 42s
+Rendering [=======&gt;---------------------------------] at 2 fps ~ eta: 41s
+Rendering [=======&gt;---------------------------------] at 2 fps ~ eta: 40s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 40s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 39s
+Rendering [=========&gt;-------------------------------] at 2 fps ~ eta: 38s
+Rendering [==========&gt;------------------------------] at 2 fps ~ eta: 37s
+Rendering [==========&gt;------------------------------] at 2 fps ~ eta: 36s
+Rendering [===========&gt;-----------------------------] at 2 fps ~ eta: 35s
+Rendering [============&gt;----------------------------] at 2 fps ~ eta: 34s
+Rendering [============&gt;----------------------------] at 2 fps ~ eta: 33s
+Rendering [=============&gt;---------------------------] at 2 fps ~ eta: 33s
+Rendering [=============&gt;---------------------------] at 2 fps ~ eta: 32s
+Rendering [==============&gt;--------------------------] at 2 fps ~ eta: 32s
+Rendering [==============&gt;--------------------------] at 2 fps ~ eta: 31s
+Rendering [===============&gt;-------------------------] at 2 fps ~ eta: 31s
+Rendering [===============&gt;-------------------------] at 2 fps ~ eta: 30s
+Rendering [================&gt;------------------------] at 2 fps ~ eta: 30s
+Rendering [================&gt;------------------------] at 2 fps ~ eta: 29s
+Rendering [=================&gt;-----------------------] at 2 fps ~ eta: 28s
+Rendering [==================&gt;----------------------] at 2 fps ~ eta: 27s
+Rendering [==================&gt;----------------------] at 2 fps ~ eta: 26s
+Rendering [===================&gt;---------------------] at 2 fps ~ eta: 26s
+Rendering [===================&gt;---------------------] at 2 fps ~ eta: 25s
+Rendering [====================&gt;--------------------] at 2 fps ~ eta: 25s
+Rendering [====================&gt;--------------------] at 2 fps ~ eta: 24s
+Rendering [=====================&gt;-------------------] at 2 fps ~ eta: 24s
+Rendering [=====================&gt;-------------------] at 2 fps ~ eta: 23s
+Rendering [======================&gt;------------------] at 2 fps ~ eta: 22s
+Rendering [=======================&gt;-----------------] at 2 fps ~ eta: 21s
+Rendering [=======================&gt;-----------------] at 2 fps ~ eta: 20s
+Rendering [========================&gt;----------------] at 2 fps ~ eta: 20s
+Rendering [========================&gt;----------------] at 2 fps ~ eta: 19s
+Rendering [=========================&gt;---------------] at 2 fps ~ eta: 19s
+Rendering [=========================&gt;---------------] at 2 fps ~ eta: 18s
+Rendering [==========================&gt;--------------] at 2 fps ~ eta: 17s
+Rendering [===========================&gt;-------------] at 2 fps ~ eta: 16s
+Rendering [===========================&gt;-------------] at 2 fps ~ eta: 15s
+Rendering [============================&gt;------------] at 2 fps ~ eta: 15s
+Rendering [============================&gt;------------] at 2 fps ~ eta: 14s
+Rendering [=============================&gt;-----------] at 2 fps ~ eta: 14s
+Rendering [=============================&gt;-----------] at 2 fps ~ eta: 13s
+Rendering [==============================&gt;----------] at 2 fps ~ eta: 12s
+Rendering [===============================&gt;---------] at 2 fps ~ eta: 11s
+Rendering [===============================&gt;---------] at 2 fps ~ eta: 10s
+Rendering [================================&gt;--------] at 2 fps ~ eta: 10s
+Rendering [================================&gt;--------] at 2 fps ~ eta:  9s
+Rendering [=================================&gt;-------] at 2 fps ~ eta:  9s
+Rendering [=================================&gt;-------] at 2 fps ~ eta:  8s
+Rendering [==================================&gt;------] at 2 fps ~ eta:  8s
+Rendering [==================================&gt;------] at 2 fps ~ eta:  7s
+Rendering [===================================&gt;-----] at 2 fps ~ eta:  6s
+Rendering [====================================&gt;----] at 2 fps ~ eta:  6s
+Rendering [====================================&gt;----] at 2 fps ~ eta:  5s
+Rendering [=====================================&gt;---] at 2 fps ~ eta:  4s
+Rendering [======================================&gt;--] at 2 fps ~ eta:  3s
+Rendering [======================================&gt;--] at 2 fps ~ eta:  2s
+Rendering [=======================================&gt;-] at 2 fps ~ eta:  2s
+Rendering [=======================================&gt;-] at 2 fps ~ eta:  1s
+Rendering [========================================&gt;] at 2 fps ~ eta:  1s
+Rendering [=========================================] at 2 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-72-1.gif" /><!-- --></p>
+</div>
+<div id="fig-16-convex-speaker-m7" class="section level3">
+<h3>Fig 16, convex: Speaker M7</h3>
+<pre class="r"><code>preds_czdz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker==&quot;M7&quot;)$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker==&quot;M7&quot;)$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit &lt;- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$yfit &lt;- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$xfit &lt;- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$yfit &lt;- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+
+preds &lt;- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+preds$Voicing &lt;- recode(preds$Voicing,
+                        voiceless=&quot;vl fricative&quot;,
+                        voiced=&quot;vd affricate&quot;)
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;vl fricative&quot;,&quot;vl fricative&quot;,&quot;vd affricate&quot;,&quot;vd affricate&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(20,20,20,20),
+  yfit=c(-12,-12,-12,-12),
+  ipa=c(&quot;ʂ&quot;,&quot;ʂʲ&quot;,&quot;dʐ&quot;,&quot;dʐʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker M7 (Fig. 16); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(22,-25)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 1.9 fps ~ eta:  1m
+Rendering [&gt;----------------------------------------] at 2 fps ~ eta: 50s
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta: 50s
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta: 48s
+Rendering [===&gt;-------------------------------------] at 2 fps ~ eta: 47s
+Rendering [===&gt;-------------------------------------] at 2 fps ~ eta: 46s
+Rendering [====&gt;------------------------------------] at 2 fps ~ eta: 45s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 44s
+Rendering [=====&gt;---------------------------------] at 1.9 fps ~ eta: 44s
+Rendering [======&gt;--------------------------------] at 1.8 fps ~ eta: 46s
+Rendering [=======&gt;-------------------------------] at 1.8 fps ~ eta: 46s
+Rendering [=======&gt;-------------------------------] at 1.8 fps ~ eta: 45s
+Rendering [========&gt;------------------------------] at 1.8 fps ~ eta: 44s
+Rendering [========&gt;------------------------------] at 1.8 fps ~ eta: 43s
+Rendering [=========&gt;-----------------------------] at 1.8 fps ~ eta: 42s
+Rendering [=========&gt;-----------------------------] at 1.8 fps ~ eta: 41s
+Rendering [==========&gt;----------------------------] at 1.8 fps ~ eta: 40s
+Rendering [==========&gt;----------------------------] at 1.8 fps ~ eta: 39s
+Rendering [===========&gt;---------------------------] at 1.8 fps ~ eta: 39s
+Rendering [===========&gt;---------------------------] at 1.9 fps ~ eta: 38s
+Rendering [===========&gt;---------------------------] at 1.9 fps ~ eta: 37s
+Rendering [============&gt;--------------------------] at 1.9 fps ~ eta: 36s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 35s
+Rendering [=============&gt;-------------------------] at 1.8 fps ~ eta: 35s
+Rendering [==============&gt;------------------------] at 1.8 fps ~ eta: 34s
+Rendering [==============&gt;------------------------] at 1.8 fps ~ eta: 33s
+Rendering [===============&gt;-----------------------] at 1.8 fps ~ eta: 33s
+Rendering [===============&gt;-----------------------] at 1.8 fps ~ eta: 32s
+Rendering [================&gt;----------------------] at 1.8 fps ~ eta: 31s
+Rendering [================&gt;----------------------] at 1.8 fps ~ eta: 30s
+Rendering [=================&gt;---------------------] at 1.8 fps ~ eta: 30s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 29s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 26s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 25s
+Rendering [====================&gt;------------------] at 1.9 fps ~ eta: 25s
+Rendering [====================&gt;------------------] at 1.9 fps ~ eta: 24s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 24s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 23s
+Rendering [======================&gt;----------------] at 1.9 fps ~ eta: 22s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 21s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 19s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 18s
+Rendering [=========================&gt;-------------] at 1.9 fps ~ eta: 18s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 16s
+Rendering [===========================&gt;-----------] at 1.9 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 14s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta: 10s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.9 fps ~ eta:  1s
+Rendering [=======================================] at 1.9 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-73-1.gif" /><!-- --></p>
+</div>
+<div id="fig-17-plain-speaker-f1" class="section level3">
+<h3>Fig 17, plain: Speaker F1</h3>
+<pre class="r"><code>preds_czdz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker==&quot;F1&quot;)$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker==&quot;F1&quot;)$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit &lt;- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$yfit &lt;- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$Voicing &lt;- recode(preds_czdz$Voicing, voiceless=&quot;vl affricate&quot;)
+preds_szz$xfit &lt;- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$yfit &lt;- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$Voicing &lt;- recode(preds_szz$Voicing, voiceless=&quot;vl fricative&quot;)
+
+preds &lt;- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;vl fricative&quot;,&quot;vl fricative&quot;,&quot;vl affricate&quot;,&quot;vl affricate&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(19,19,19,19),
+  yfit=c(-5,-5,-5,-5),
+  ipa=c(&quot;ʂ&quot;,&quot;ʂʲ&quot;,&quot;tʂ&quot;,&quot;tʂʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker F1 (Fig. 17); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(20,-22)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 1.5 fps ~ eta:  1m
+Rendering [&gt;--------------------------------------] at 1.5 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.6 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [==&gt;------------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [===&gt;-----------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [===&gt;-----------------------------------] at 1.8 fps ~ eta:  1m
+Rendering [====&gt;----------------------------------] at 1.8 fps ~ eta:  1m
+Rendering [====&gt;----------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [=====&gt;---------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [=====&gt;---------------------------------] at 1.7 fps ~ eta: 50s
+Rendering [======&gt;--------------------------------] at 1.7 fps ~ eta: 49s
+Rendering [=======&gt;-------------------------------] at 1.7 fps ~ eta: 48s
+Rendering [=======&gt;-------------------------------] at 1.7 fps ~ eta: 47s
+Rendering [========&gt;------------------------------] at 1.7 fps ~ eta: 47s
+Rendering [========&gt;------------------------------] at 1.7 fps ~ eta: 46s
+Rendering [=========&gt;-----------------------------] at 1.7 fps ~ eta: 45s
+Rendering [=========&gt;-----------------------------] at 1.7 fps ~ eta: 44s
+Rendering [==========&gt;----------------------------] at 1.7 fps ~ eta: 43s
+Rendering [===========&gt;---------------------------] at 1.7 fps ~ eta: 42s
+Rendering [===========&gt;---------------------------] at 1.7 fps ~ eta: 41s
+Rendering [============&gt;--------------------------] at 1.7 fps ~ eta: 41s
+Rendering [============&gt;--------------------------] at 1.7 fps ~ eta: 40s
+Rendering [=============&gt;-------------------------] at 1.7 fps ~ eta: 39s
+Rendering [=============&gt;-------------------------] at 1.7 fps ~ eta: 38s
+Rendering [==============&gt;------------------------] at 1.7 fps ~ eta: 37s
+Rendering [==============&gt;------------------------] at 1.7 fps ~ eta: 36s
+Rendering [===============&gt;-----------------------] at 1.7 fps ~ eta: 35s
+Rendering [================&gt;----------------------] at 1.7 fps ~ eta: 34s
+Rendering [================&gt;----------------------] at 1.7 fps ~ eta: 33s
+Rendering [=================&gt;---------------------] at 1.7 fps ~ eta: 32s
+Rendering [==================&gt;--------------------] at 1.7 fps ~ eta: 31s
+Rendering [==================&gt;--------------------] at 1.7 fps ~ eta: 30s
+Rendering [===================&gt;-------------------] at 1.7 fps ~ eta: 29s
+Rendering [===================&gt;-------------------] at 1.7 fps ~ eta: 28s
+Rendering [====================&gt;------------------] at 1.7 fps ~ eta: 27s
+Rendering [=====================&gt;-----------------] at 1.7 fps ~ eta: 26s
+Rendering [=====================&gt;-----------------] at 1.7 fps ~ eta: 25s
+Rendering [======================&gt;----------------] at 1.7 fps ~ eta: 24s
+Rendering [=======================&gt;---------------] at 1.7 fps ~ eta: 23s
+Rendering [=======================&gt;---------------] at 1.7 fps ~ eta: 22s
+Rendering [========================&gt;--------------] at 1.7 fps ~ eta: 21s
+Rendering [========================&gt;--------------] at 1.7 fps ~ eta: 20s
+Rendering [=========================&gt;-------------] at 1.8 fps ~ eta: 19s
+Rendering [==========================&gt;------------] at 1.8 fps ~ eta: 18s
+Rendering [==========================&gt;------------] at 1.8 fps ~ eta: 17s
+Rendering [===========================&gt;-----------] at 1.8 fps ~ eta: 16s
+Rendering [============================&gt;----------] at 1.8 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.8 fps ~ eta: 14s
+Rendering [=============================&gt;---------] at 1.8 fps ~ eta: 14s
+Rendering [=============================&gt;---------] at 1.8 fps ~ eta: 13s
+Rendering [==============================&gt;--------] at 1.8 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.8 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.8 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.8 fps ~ eta: 10s
+Rendering [================================&gt;------] at 1.7 fps ~ eta:  9s
+Rendering [=================================&gt;-----] at 1.7 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.7 fps ~ eta:  7s
+Rendering [==================================&gt;----] at 1.7 fps ~ eta:  7s
+Rendering [==================================&gt;----] at 1.7 fps ~ eta:  6s
+Rendering [===================================&gt;---] at 1.7 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.7 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.7 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.7 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.6 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.6 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.6 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.6 fps ~ eta:  1s
+Rendering [=======================================] at 1.6 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-74-1.gif" /><!-- --></p>
+</div>
+<div id="fig-18-plain-speaker-m8" class="section level3">
+<h3>Fig 18, plain: Speaker M8</h3>
+<pre class="r"><code>preds_czdz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker==&quot;M8&quot;)$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker==&quot;M8&quot;)$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit &lt;- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$yfit &lt;- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$Voicing &lt;- recode(preds_czdz$Voicing, voiceless=&quot;vl affricate&quot;)
+preds_szz$xfit &lt;- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$yfit &lt;- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$Voicing &lt;- recode(preds_szz$Voicing, voiceless=&quot;vl fricative&quot;)
+
+preds &lt;- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;vl fricative&quot;,&quot;vl fricative&quot;,&quot;vl affricate&quot;,&quot;vl affricate&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(-11,-11,-11,-11),
+  yfit=c(-1,-1,-1,-1),
+  ipa=c(&quot;ʂ&quot;,&quot;ʂʲ&quot;,&quot;tʂ&quot;,&quot;tʂʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker M8 (Fig. 18); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(-9,-55)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [-----------------------------------------] at 2 fps ~ eta:  1m
+Rendering [&gt;----------------------------------------] at 2 fps ~ eta:  1m
+Rendering [&gt;----------------------------------------] at 2 fps ~ eta: 48s
+Rendering [=&gt;---------------------------------------] at 2 fps ~ eta: 49s
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [==&gt;--------------------------------------] at 2 fps ~ eta: 48s
+Rendering [==&gt;--------------------------------------] at 2 fps ~ eta: 47s
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [===&gt;-----------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [===&gt;-----------------------------------] at 1.8 fps ~ eta: 49s
+Rendering [====&gt;----------------------------------] at 1.8 fps ~ eta: 49s
+Rendering [====&gt;----------------------------------] at 1.9 fps ~ eta: 47s
+Rendering [====&gt;----------------------------------] at 1.9 fps ~ eta: 46s
+Rendering [=====&gt;---------------------------------] at 1.9 fps ~ eta: 45s
+Rendering [======&gt;--------------------------------] at 1.9 fps ~ eta: 44s
+Rendering [======&gt;--------------------------------] at 1.9 fps ~ eta: 43s
+Rendering [======&gt;--------------------------------] at 1.9 fps ~ eta: 42s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 43s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 41s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 40s
+Rendering [========&gt;--------------------------------] at 2 fps ~ eta: 39s
+Rendering [=========&gt;-------------------------------] at 2 fps ~ eta: 39s
+Rendering [=========&gt;-------------------------------] at 2 fps ~ eta: 38s
+Rendering [==========&gt;------------------------------] at 2 fps ~ eta: 37s
+Rendering [=========&gt;-----------------------------] at 2.1 fps ~ eta: 36s
+Rendering [==========&gt;----------------------------] at 2.1 fps ~ eta: 35s
+Rendering [==========&gt;----------------------------] at 2.1 fps ~ eta: 34s
+Rendering [===========&gt;---------------------------] at 2.1 fps ~ eta: 34s
+Rendering [===========&gt;---------------------------] at 2.1 fps ~ eta: 33s
+Rendering [============&gt;--------------------------] at 2.1 fps ~ eta: 32s
+Rendering [============&gt;--------------------------] at 2.1 fps ~ eta: 31s
+Rendering [=============&gt;-------------------------] at 2.1 fps ~ eta: 31s
+Rendering [=============&gt;-------------------------] at 2.1 fps ~ eta: 30s
+Rendering [==============&gt;------------------------] at 2.2 fps ~ eta: 29s
+Rendering [==============&gt;------------------------] at 2.2 fps ~ eta: 28s
+Rendering [===============&gt;-----------------------] at 2.2 fps ~ eta: 28s
+Rendering [===============&gt;-----------------------] at 2.2 fps ~ eta: 27s
+Rendering [================&gt;----------------------] at 2.2 fps ~ eta: 27s
+Rendering [================&gt;----------------------] at 2.1 fps ~ eta: 27s
+Rendering [================&gt;----------------------] at 2.1 fps ~ eta: 26s
+Rendering [=================&gt;---------------------] at 2.1 fps ~ eta: 26s
+Rendering [=================&gt;---------------------] at 2.1 fps ~ eta: 25s
+Rendering [==================&gt;--------------------] at 2.1 fps ~ eta: 25s
+Rendering [==================&gt;--------------------] at 2.1 fps ~ eta: 24s
+Rendering [===================&gt;-------------------] at 2.1 fps ~ eta: 24s
+Rendering [===================&gt;-------------------] at 2.1 fps ~ eta: 23s
+Rendering [====================&gt;------------------] at 2.1 fps ~ eta: 22s
+Rendering [=====================&gt;-----------------] at 2.1 fps ~ eta: 22s
+Rendering [=====================&gt;-----------------] at 2.1 fps ~ eta: 21s
+Rendering [======================&gt;----------------] at 2.1 fps ~ eta: 20s
+Rendering [=======================&gt;---------------] at 2.1 fps ~ eta: 19s
+Rendering [=======================&gt;---------------] at 2.1 fps ~ eta: 18s
+Rendering [========================&gt;--------------] at 2.1 fps ~ eta: 18s
+Rendering [========================&gt;--------------] at 2.1 fps ~ eta: 17s
+Rendering [==========================&gt;--------------] at 2 fps ~ eta: 17s
+Rendering [===========================&gt;-------------] at 2 fps ~ eta: 16s
+Rendering [===========================&gt;-------------] at 2 fps ~ eta: 15s
+Rendering [============================&gt;------------] at 2 fps ~ eta: 15s
+Rendering [============================&gt;------------] at 2 fps ~ eta: 14s
+Rendering [=============================&gt;-----------] at 2 fps ~ eta: 14s
+Rendering [=============================&gt;-----------] at 2 fps ~ eta: 13s
+Rendering [==============================&gt;----------] at 2 fps ~ eta: 13s
+Rendering [==============================&gt;----------] at 2 fps ~ eta: 12s
+Rendering [===============================&gt;---------] at 2 fps ~ eta: 12s
+Rendering [===============================&gt;---------] at 2 fps ~ eta: 11s
+Rendering [================================&gt;--------] at 2 fps ~ eta: 10s
+Rendering [=================================&gt;-------] at 2 fps ~ eta:  9s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.8 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.8 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.8 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.8 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.8 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.8 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.8 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.8 fps ~ eta:  1s
+Rendering [=======================================] at 1.8 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-75-1.gif" /><!-- --></p>
+</div>
+<div id="fig-19-concave-speaker-f9" class="section level3">
+<h3>Fig 19, concave: Speaker F9</h3>
+<pre class="r"><code>preds_czdz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(czdz_x, Speaker==&quot;F9&quot;)$Speaker[1],
+                     Word=czdz_x$Word[1])
+preds_szz &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker==&quot;F9&quot;)$Speaker[1],
+                     Word=szz_x$Word[1])
+
+preds_czdz$xfit &lt;- predict(czdz_gam_hor, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_czdz$yfit &lt;- predict(czdz_gam_ver, newdata=preds_czdz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$xfit &lt;- predict(szz_gam_hor, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+preds_szz$yfit &lt;- predict(szz_gam_ver, newdata=preds_szz, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))$fit
+
+preds &lt;- rbind(preds_szz, preds_czdz)
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+preds$Voicing &lt;- recode(preds$Voicing,
+                        voiceless=&quot;vl affricate&quot;,
+                        voiced=&quot;vd fricative&quot;)
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;vd fricative&quot;,&quot;vd fricative&quot;,&quot;vl affricate&quot;,&quot;vl affricate&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(60,60,60,60),
+  yfit=c(-17,-17,-17,-17),
+  ipa=c(&quot;ʐ&quot;,&quot;ʐʲ&quot;,&quot;tʂ&quot;,&quot;tʂʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker F9 (Fig. 19); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(62,23)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 1.8 fps ~ eta:  1m
+Rendering [&gt;--------------------------------------] at 1.7 fps ~ eta:  1m
+Rendering [&gt;--------------------------------------] at 1.8 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta:  1m
+Rendering [=&gt;-------------------------------------] at 1.9 fps ~ eta: 50s
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta: 49s
+Rendering [==&gt;------------------------------------] at 1.9 fps ~ eta: 48s
+Rendering [===&gt;-----------------------------------] at 1.9 fps ~ eta: 48s
+Rendering [====&gt;----------------------------------] at 1.9 fps ~ eta: 47s
+Rendering [====&gt;----------------------------------] at 1.9 fps ~ eta: 46s
+Rendering [=====&gt;---------------------------------] at 1.9 fps ~ eta: 45s
+Rendering [======&gt;--------------------------------] at 1.9 fps ~ eta: 44s
+Rendering [======&gt;--------------------------------] at 1.9 fps ~ eta: 43s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 42s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 43s
+Rendering [========&gt;------------------------------] at 1.9 fps ~ eta: 42s
+Rendering [=========&gt;-----------------------------] at 1.9 fps ~ eta: 41s
+Rendering [=========&gt;-----------------------------] at 1.9 fps ~ eta: 40s
+Rendering [==========&gt;----------------------------] at 1.9 fps ~ eta: 39s
+Rendering [==========&gt;----------------------------] at 1.8 fps ~ eta: 39s
+Rendering [===========&gt;---------------------------] at 1.8 fps ~ eta: 38s
+Rendering [===========&gt;---------------------------] at 1.9 fps ~ eta: 37s
+Rendering [============&gt;--------------------------] at 1.9 fps ~ eta: 37s
+Rendering [============&gt;--------------------------] at 1.9 fps ~ eta: 36s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 36s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 35s
+Rendering [==============&gt;------------------------] at 1.8 fps ~ eta: 34s
+Rendering [==============&gt;------------------------] at 1.8 fps ~ eta: 33s
+Rendering [===============&gt;-----------------------] at 1.8 fps ~ eta: 32s
+Rendering [================&gt;----------------------] at 1.8 fps ~ eta: 31s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 31s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 30s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 30s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 29s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 26s
+Rendering [====================&gt;------------------] at 1.9 fps ~ eta: 25s
+Rendering [====================&gt;------------------] at 1.9 fps ~ eta: 24s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 24s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 23s
+Rendering [======================&gt;----------------] at 1.9 fps ~ eta: 22s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 21s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 19s
+Rendering [=========================&gt;-------------] at 1.9 fps ~ eta: 18s
+Rendering [=========================&gt;-------------] at 1.9 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 16s
+Rendering [===========================&gt;-----------] at 1.9 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 14s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta: 10s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.9 fps ~ eta:  1s
+Rendering [=======================================] at 1.9 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-76-1.gif" /><!-- --></p>
+</div>
+<div id="fig-20-concave-speaker-m4" class="section level3">
+<h3>Fig 20, concave: Speaker M4</h3>
+<pre class="r"><code>preds &lt;- expand.grid(Palatalization=as.ordered(factor(c(&quot;plain&quot;,&quot;palatalized&quot;), levels=c(&quot;plain&quot;,&quot;palatalized&quot;))),
+                     Voicing=as.ordered(factor(c(&quot;voiceless&quot;,&quot;voiced&quot;), levels=c(&quot;voiceless&quot;,&quot;voiced&quot;))),
+                     time=seq(0,1,0.01),
+                     sensor=1:4,
+                     Speaker=filter(szz_x, Speaker==&quot;M4&quot;)$Speaker[1],
+                     Word=szz_x$Word[1])
+
+pred_xs &lt;- predict(szz_gam_hor, newdata=preds, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))
+pred_ys &lt;- predict(szz_gam_ver, newdata=preds, se=T, 
+                   exclude=c(&quot;s(Word)&quot;))
+
+preds$xfit &lt;- pred_xs$fit
+preds$yfit &lt;- pred_ys$fit
+
+preds$sensor_text &lt;- c(&quot;TT&quot;,&quot;TF&quot;,&quot;TD&quot;,&quot;TB&quot;)[preds$sensor]
+
+ipa_text &lt;- data.frame(
+  Voicing=c(&quot;voiceless&quot;,&quot;voiceless&quot;,&quot;voiced&quot;,&quot;voiced&quot;),
+  Palatalization=c(&quot;plain&quot;,&quot;palatalized&quot;,&quot;plain&quot;,&quot;palatalized&quot;),
+  xfit=c(55,55,55,55),
+  yfit=c(-10,-10,-10,-10),
+  ipa=c(&quot;ʂ&quot;,&quot;ʂʲ&quot;,&quot;ʐ&quot;,&quot;ʐʲ&quot;)
+)
+
+p &lt;- ggplot(preds, aes(x=xfit, y=yfit)) +
+  facet_grid(Voicing~Palatalization) +
+  geom_line() +
+  geom_point(pch=16) +
+  geom_text(aes(y=yfit+1, label=sensor_text)) +
+  geom_text(data=ipa_text, aes(label=ipa), size=8) +
+  transition_time(time) +
+  ease_aes(&#39;linear&#39;) +
+  labs(title = &#39;Speaker M4 (Fig. 20); Relative time: {frame_time}&#39;) +
+  scale_x_reverse(limits=c(56,20)) +
+  xlab(&quot;horizontal sensor position (mm)&quot;) +
+  ylab(&quot;vertical sensor position (mm)&quot;) +
+  theme_bw() +
+  theme(axis.title=element_text(size=14, face=&quot;bold&quot;),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14),
+        panel.grid=element_blank())
+  
+
+animate(p, nframes=101, fps=24)</code></pre>
+<pre><code>## 
+Rendering [---------------------------------------] at 2.5 fps ~ eta: 40s
+Rendering [&gt;--------------------------------------] at 2.3 fps ~ eta: 44s
+Rendering [&gt;--------------------------------------] at 2.3 fps ~ eta: 42s
+Rendering [=&gt;-------------------------------------] at 2.3 fps ~ eta: 41s
+Rendering [=&gt;-------------------------------------] at 2.3 fps ~ eta: 42s
+Rendering [=&gt;-------------------------------------] at 2.2 fps ~ eta: 42s
+Rendering [==&gt;------------------------------------] at 2.2 fps ~ eta: 43s
+Rendering [===&gt;-----------------------------------] at 2.1 fps ~ eta: 43s
+Rendering [====&gt;----------------------------------] at 2.1 fps ~ eta: 43s
+Rendering [====&gt;------------------------------------] at 2 fps ~ eta: 43s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 43s
+Rendering [=====&gt;-----------------------------------] at 2 fps ~ eta: 42s
+Rendering [======&gt;----------------------------------] at 2 fps ~ eta: 42s
+Rendering [======&gt;----------------------------------] at 2 fps ~ eta: 41s
+Rendering [=======&gt;---------------------------------] at 2 fps ~ eta: 41s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 42s
+Rendering [=======&gt;-------------------------------] at 1.9 fps ~ eta: 41s
+Rendering [========&gt;------------------------------] at 1.9 fps ~ eta: 41s
+Rendering [========&gt;------------------------------] at 1.9 fps ~ eta: 40s
+Rendering [=========&gt;-----------------------------] at 1.9 fps ~ eta: 39s
+Rendering [=========&gt;-----------------------------] at 1.9 fps ~ eta: 38s
+Rendering [==========&gt;----------------------------] at 1.9 fps ~ eta: 38s
+Rendering [==========&gt;----------------------------] at 1.9 fps ~ eta: 37s
+Rendering [===========&gt;---------------------------] at 1.9 fps ~ eta: 37s
+Rendering [===========&gt;---------------------------] at 1.9 fps ~ eta: 36s
+Rendering [============&gt;--------------------------] at 1.9 fps ~ eta: 36s
+Rendering [============&gt;--------------------------] at 1.9 fps ~ eta: 35s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 35s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 34s
+Rendering [=============&gt;-------------------------] at 1.9 fps ~ eta: 33s
+Rendering [==============&gt;------------------------] at 1.9 fps ~ eta: 33s
+Rendering [==============&gt;------------------------] at 1.9 fps ~ eta: 32s
+Rendering [===============&gt;-----------------------] at 1.9 fps ~ eta: 31s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 30s
+Rendering [================&gt;----------------------] at 1.9 fps ~ eta: 29s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 29s
+Rendering [=================&gt;---------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 28s
+Rendering [==================&gt;--------------------] at 1.9 fps ~ eta: 27s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 26s
+Rendering [===================&gt;-------------------] at 1.9 fps ~ eta: 25s
+Rendering [====================&gt;------------------] at 1.9 fps ~ eta: 24s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 23s
+Rendering [=====================&gt;-----------------] at 1.9 fps ~ eta: 22s
+Rendering [======================&gt;----------------] at 1.9 fps ~ eta: 22s
+Rendering [======================&gt;----------------] at 1.9 fps ~ eta: 21s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 21s
+Rendering [=======================&gt;---------------] at 1.9 fps ~ eta: 20s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 19s
+Rendering [========================&gt;--------------] at 1.9 fps ~ eta: 18s
+Rendering [=========================&gt;-------------] at 1.9 fps ~ eta: 18s
+Rendering [=========================&gt;-------------] at 1.9 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 17s
+Rendering [==========================&gt;------------] at 1.9 fps ~ eta: 16s
+Rendering [===========================&gt;-----------] at 1.9 fps ~ eta: 15s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 14s
+Rendering [============================&gt;----------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 13s
+Rendering [=============================&gt;---------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 12s
+Rendering [==============================&gt;--------] at 1.9 fps ~ eta: 11s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta: 10s
+Rendering [===============================&gt;-------] at 1.9 fps ~ eta:  9s
+Rendering [================================&gt;------] at 1.9 fps ~ eta:  8s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  7s
+Rendering [=================================&gt;-----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  6s
+Rendering [==================================&gt;----] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  5s
+Rendering [===================================&gt;---] at 1.9 fps ~ eta:  4s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  3s
+Rendering [====================================&gt;--] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  2s
+Rendering [=====================================&gt;-] at 1.9 fps ~ eta:  1s
+Rendering [======================================&gt;] at 1.9 fps ~ eta:  1s
+Rendering [=======================================] at 1.9 fps ~ eta:  0s
+                                                                         </code></pre>
+<pre><code>## 
+Frame 1 (0%)
+Frame 2 (1%)
+Frame 3 (2%)
+Frame 4 (3%)
+Frame 5 (4%)
+Frame 6 (5%)
+Frame 7 (6%)
+Frame 8 (7%)
+Frame 9 (8%)
+Frame 10 (9%)
+Frame 11 (10%)
+Frame 12 (11%)
+Frame 13 (12%)
+Frame 14 (13%)
+Frame 15 (14%)
+Frame 16 (15%)
+Frame 17 (16%)
+Frame 18 (17%)
+Frame 19 (18%)
+Frame 20 (19%)
+Frame 21 (20%)
+Frame 22 (21%)
+Frame 23 (22%)
+Frame 24 (23%)
+Frame 25 (24%)
+Frame 26 (25%)
+Frame 27 (26%)
+Frame 28 (27%)
+Frame 29 (28%)
+Frame 30 (29%)
+Frame 31 (30%)
+Frame 32 (31%)
+Frame 33 (32%)
+Frame 34 (33%)
+Frame 35 (34%)
+Frame 36 (35%)
+Frame 37 (36%)
+Frame 38 (37%)
+Frame 39 (38%)
+Frame 40 (39%)
+Frame 41 (40%)
+Frame 42 (41%)
+Frame 43 (42%)
+Frame 44 (43%)
+Frame 45 (44%)
+Frame 46 (45%)
+Frame 47 (46%)
+Frame 48 (47%)
+Frame 49 (48%)
+Frame 50 (49%)
+Frame 51 (50%)
+Frame 52 (51%)
+Frame 53 (52%)
+Frame 54 (53%)
+Frame 55 (54%)
+Frame 56 (55%)
+Frame 57 (56%)
+Frame 58 (57%)
+Frame 59 (58%)
+Frame 60 (59%)
+Frame 61 (60%)
+Frame 62 (61%)
+Frame 63 (62%)
+Frame 64 (63%)
+Frame 65 (64%)
+Frame 66 (65%)
+Frame 67 (66%)
+Frame 68 (67%)
+Frame 69 (68%)
+Frame 70 (69%)
+Frame 71 (70%)
+Frame 72 (71%)
+Frame 73 (72%)
+Frame 74 (73%)
+Frame 75 (74%)
+Frame 76 (75%)
+Frame 77 (76%)
+Frame 78 (77%)
+Frame 79 (78%)
+Frame 80 (79%)
+Frame 81 (80%)
+Frame 82 (81%)
+Frame 83 (82%)
+Frame 84 (83%)
+Frame 85 (84%)
+Frame 86 (85%)
+Frame 87 (86%)
+Frame 88 (87%)
+Frame 89 (88%)
+Frame 90 (89%)
+Frame 91 (90%)
+Frame 92 (91%)
+Frame 93 (92%)
+Frame 94 (93%)
+Frame 95 (94%)
+Frame 96 (95%)
+Frame 97 (96%)
+Frame 98 (97%)
+Frame 99 (98%)
+Frame 100 (99%)
+Frame 101 (100%)
+## Finalizing encoding... done!</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-77-1.gif" /><!-- --></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
